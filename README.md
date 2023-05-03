@@ -11,8 +11,14 @@ The PIO constantly reads the address in (A0-A13) and writes the data out (D0-D7)
 
 To ensure the Pico doesn't write to the data bus when not required the output enable (OE) pin on the 74LS245 chip is controlled by the OR of MREQ, A14, A15 & RD (1 don't send data, 0 send data)
 
+## Schematic
+
+I redeisgned Derek's schematic in order to put the Address & Data GPIOs in order which is required for the PIO code. I also removed the need for the ROMACCESS connected to the PICO, shifting to just rely on the OE pin of the DATA level converter to stop the Data bus being written to when not required.
+
+![image](./images/schematic.png "Schematic")
+
 ## PCB
 
-I redeisgned Derek's PCB in order to put the Address & Data GPIOs in order which is required for the PIO code. I also shifted to using through hole components instead of surface mount due to my soldering skills. 
+For the PCB design I moved the components to the reverse of the PCB giving more room. I also shifted to using through hole components instead of surface mount due to my soldering skills.
 
 ![image](./images/picoif2.png "PCB")
