@@ -1,6 +1,8 @@
 # ZXPicoIF2ROM
 IF2 ROM Cartridge Replacement using a Raspberry Pico
 
+Based on the original design by Derek Fountain https://github.com/derekfountain/zx-spectrum-pico-rom
+
 ## PiO
 Makes use of the PIO state machine of the Raspberry Pico.
 
