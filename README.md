@@ -4,5 +4,5 @@ IF2 ROM Cartridge Replacement using a Raspberry Pico
 ## PiO
 Makes use of the PIO state machine of the Raspberry Pico.
 
-It constantly reads the address (A0-A13) and writes the data out from the correct ROM location. The output enable is controlled by the 74LS245 chip rather than within the PIO code.
+It constantly reads the address in (A0-A13) and writes the data out (D0-D7) from the correct ROM memory location. To ensure the Pico doesn't write to the data bus when not required the output enable (OE) pin on the 74LS245 chip is controlled by the OR of MREQ, A14, A15 & RD (1 don't send data, 0 send data)
 
