@@ -11,3 +11,8 @@ The PIO constantly reads the address in (A0-A13) and writes the data out (D0-D7)
 
 To ensure the Pico doesn't write to the data bus when not required the output enable (OE) pin on the 74LS245 chip is controlled by the OR of MREQ, A14, A15 & RD (1 don't send data, 0 send data)
 
+## PCB
+
+I redeisgned Derek's PCB in order to put the GPIO in order which is required for the PIO code. I also shifted to using through hole components instead of surface mount due to my soldering skills. 
+
+![image](./images/picoif2.png "PCB")
