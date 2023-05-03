@@ -13,6 +13,6 @@ To ensure the Pico doesn't write to the data bus when not required the output en
 
 ## PCB
 
-I redeisgned Derek's PCB in order to put the GPIO in order which is required for the PIO code. I also shifted to using through hole components instead of surface mount due to my soldering skills. 
+I redeisgned Derek's PCB in order to put the Address & Data GPIOs in order which is required for the PIO code. I also shifted to using through hole components instead of surface mount due to my soldering skills. 
 
 ![image](./images/picoif2.png "PCB")
