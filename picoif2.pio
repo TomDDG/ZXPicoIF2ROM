@@ -2,7 +2,7 @@
     pull block // get address header, top 18bits
     mov x osr // put into x
 .wrap_target
-    mov isr x // get top 18bits from x, when combined with 14 address pins forms a 32bit address in Pico memory
-    in pins 14 // shift in the bottom 14 bits from gpio to ISR, auto push enabled ISR to RX FIFO=32bit address of byte required
-    out pins 8 // DMA populates OSR with the correct byte, shift single byte (8 bits) from OSR to data gpio
+    mov isr x // get top 18bits from x, when combined forms a 32bit address in Pico memory
+    in pins 14 // shift in the bottom 14 bits from gpio pins to ISR, auto push enabled ISR to RX FIFO=32bit address of byte required
+    out pins 8 // DMA populates OSR with the correct byte, shift single byte (8 bits) from OSR to gpio pins
 .wrap

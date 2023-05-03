@@ -22,6 +22,8 @@
 #define PIN_RESET   28  // GPIO to control RESET of Spectrum
 #define PIN_USER    26  // User input GPIO
 //
+#define MAXROMS     4
+//
 // ---------------------------------------------------------------------------
 // gpio masks
 // ---------------------------------------------------------------------------
@@ -35,21 +37,20 @@ void main() {
     // ---------------------------
     // copy correct ROM into place
     // ---------------------------
-    uint8_t rom[16384] __attribute__((aligned (16384)));
-    //for(i=0;i<16384;i++) rom[i]=romdiag[i];
-    for(i=0;i<16384;i++) rom[i]=pssst[i];
-    //for(i=0;i<16384;i++) rom[i]=__ROMs_retroleum_diag_v59_rom[i];
-    //for(i=0;i<16384;i++) rom[i]=__ROMs_gosh_wonderful_1_32_rom[i];
-    //for(i=0;i<16384;i++) rom[i]=__ROMs_48_original_rom[i];        
+    const uint8_t *roms[] = {retroleum_diag_v59,gosh_wonderful_1_32,original,diag};
+    uint8_t rompos=0;
+    uint8_t rom[16384] __attribute__((aligned (16384))); // align on 16384 boundary so can be used with DMA
+    //
+    for(i=0;i<16384;i++) rom[i]=roms[rompos][i];
     // ------------------------
     // set-up user & reset gpio
     // ------------------------
-    gpio_init(MASK_USER);
-    gpio_set_dir(MASK_USER,GPIO_IN);
-    gpio_pull_up(MASK_USER);
+    gpio_init(PIN_USER);
+    gpio_set_dir(PIN_USER,GPIO_IN);
+    gpio_pull_up(PIN_USER);
     gpio_init(PIN_RESET);
     gpio_set_dir(PIN_RESET,GPIO_OUT);
-    gpio_put(PIN_RESET,true);    // hold in RESET state till ready *not really required for PIO as it is fast enough but used for swapping ROMs
+    gpio_put(PIN_RESET,true);    // hold in RESET state till ready *not really required for PIO as it is fast enough but used for swapping ROMs    
     // ***********************************************************************
     // Set-up PIO
     // ***********************************************************************
@@ -117,8 +118,18 @@ void main() {
     // start PIO state machine
     pio_sm_put(pio,addr_data_sm,((dma_channel_hw_addr(data_chan)->read_addr)>>14)); // put start memory address into PIO shifted 14bits so when added to the 14 gpios it gives the correct memory location
     pio_sm_set_enabled(pio,addr_data_sm,true); // enable state machine
+    // reset when ready
     gpio_put(PIN_RESET,false);    // release RESET    
     while(true) {
-        tight_loop_contents();
+        if((gpio_get_all()&MASK_USER)==0) {  
+            gpio_put(PIN_RESET,true);
+            if(++rompos==MAXROMS) rompos=0;
+            for(i=0;i<16384;i++) rom[i]=roms[rompos][i];
+            while((gpio_get_all()&MASK_USER)==0) {
+                tight_loop_contents();
+            }     
+            busy_wait_us_32(5000); // 5ms wait before reset
+            gpio_put(PIN_RESET,false);    // release RESET  
+        }
     }
 }
