@@ -23,7 +23,7 @@ My initial design has the PIO wait for the correct signal before sending the dat
 
 ## Schematic
 
-I redeisgned Derek's schematic in order to put the Address & Data GPIOs in order which is required for the PIO code. I also removed the need for the ROMACCESS connected to the PICO, shifting to just rely on the OE pin of the DATA level converter to stop the Data bus being written to when not required.
+The main changes from Derek's original circuit was to put the Address & Data GPIOs in order which is required for the PIO code. I also removed the ouput from the OR chip to the PICO as I shifted to just controlling the data output using the OE pin as described above. This freed up a couple of GPIOs which I decided to allocate to a I2C connector just in case I wanted to use a screen or something else.
 
 ![image](./images/schematic.png "Schematic")
 
