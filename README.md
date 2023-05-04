@@ -23,12 +23,12 @@ My initial design has the PIO wait for the correct signal before sending the dat
 
 ## Schematic
 
-The main changes from Derek's original circuit was to put the Address & Data GPIOs in order which is required for the PIO code. I also removed the ouput from the OR chip to the PICO as I shifted to just controlling the data output using the OE pin as described above. This freed up a couple of GPIOs which I decided to allocate to a I2C connector just in case I wanted to use a screen or something else.
+The main changes from Derek's original circuit was to put the Address & Data GPIOs in order which is required for the PIO code. I also removed the ouput from the OR chip to the PICO as I shifted to just controlling the data output using the OE pin as described above. This freed up a couple of GPIOs which I decided to allocate to a I2C connector just in case I wanted to attach a screen or something else.
 
 ![image](./images/schematic.png "Schematic")
 
 ## PCB
 
-For the PCB design I moved the components to the reverse of the PCB giving more room. I also shifted to using through hole components instead of surface mount due to my soldering skills.
+For the PCB design I moved the components to the reverse of the PCB meaning I could mount some components lower down, knowing they wouldn't clash with the case, thus giving more room. I also shifted to using through hole components instead of surface mount due to my soldering skills.
 
 ![image](./images/picoif2.png "PCB")
