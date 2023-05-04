@@ -13,7 +13,7 @@ In order for the PIO to work it needs to be coupled with the PICOs DMA which wil
 1. PIO reads (IN) the 14 address pins (A0-A13) to the ISR
 2. The ISR is auto pushed into the PIO FIFO
 3. DMA channel 1 reads the PIO FIFO and puts this into the DMA channel 2 read address
-4. DMA channel 2 pushes the data at the new read address to the PIO FIFO
+4. DMA channel 2 sends the single byte of data (8bits) at the new read address to the PIO FIFO
 5. PIO auto pushes the PIO FIFO to the OSR which is then outputted (OUT) to the data pins (D0-D7)
 6. Loop to 1
 
