@@ -29,6 +29,6 @@ The main changes from Derek's original circuit was to put the Address & Data GPI
 
 ## PCB
 
-For the PCB design I moved the components to the reverse of the PCB meaning I could mount some components lower down, knowing they wouldn't clash with the case, thus giving more room. I also shifted to using through hole components instead of surface mount due to my soldering skills.
+For the PCB design I moved the components to the reverse of the PCB meaning I could mount some components lower down, knowing they wouldn't clash with the case, thus giving more room. I also shifted to using through hole components instead of surface mount due to my soldering skills. I also added a RUN button which basically resets the PICO, useful for flashing new firmware or recovering the PICO if it crashes.
 
 ![image](./images/picoif2.png "PCB")
