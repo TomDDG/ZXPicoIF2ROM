@@ -11,6 +11,8 @@ Usage is very simple. On every cold boot the Spectrum will default to the first 
 
 To add more ROMs or change the ones provided here simply add them to the header file, change the `roms[]` arrray and make sure the `MAXROMS` define is set to the correct number of ROMs available.
 
+If you would like to try out different ROMs there are a lot on Paul Farrow's website http://www.fruitcake.plus.com/Sinclair/Interface2/Cartridges/Interface2_RC_Cartridges.htm
+
 ## Compressed ROMs
 
 From firmware v0.4 I shifted to use compressed ROMs just to save a little space if you want to add a lot of ROMs. PICO flash is 2MB so space for ~100 ROMs, so not a massive issue but no need to waste space. I added a little utility `compressrom` which compresses a ROM binary file and creates the approprite header file to use with the main code. The utility will also pad 8kB ROMs to 16kB saving the need to do this manually.
