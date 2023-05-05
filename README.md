@@ -7,9 +7,9 @@ Based on the original design by Derek Fountain https://github.com/derekfountain/
 
 ## Usage
 
-Usage is very simple. On every cold boot the Spectrum will default to the first ROM in the `const uint8_t *roms[] = {diagv59,original,diagv035,testrom};` array which is basically the ROMs in the `roms.h` header file. To change the ROM you simply press and hold (firmware v0.3+) the user button for >1second. Upon release the new ROM will boot. If you want to simply reset the Spectrum just press the user button and do not hold down.
+Usage is very simple. On every cold boot the Spectrum will default to the first ROM in the `roms[]` array which is basically the ROMs in the `roms.h` header file. To change the ROM you simply press and hold (firmware v0.3+) the user button for >1second. Upon release the new ROM will boot. If you want to simply reset the Spectrum just press the user button and do not hold down.
 
-To add more ROMs or change the ones provided here simply add them to the header file, change the arrray and make sure the `#define MAXROMS     4` is set to the correct number of ROMs available.
+To add more ROMs or change the ones provided here simply add them to the header file, change the arrray and make sure the `MAXROMS` define is set to the correct number of ROMs available.
 
 ## Compressed ROMs
 
