@@ -1,5 +1,10 @@
 #define PROG_NAME   "ZX PicoIF2"
-#define VERSION_NUM "v0.2"
+#define VERSION_NUM "v0.3"
+
+//
+// v0.2 initial release
+// v0.3 added multi-function to user button, <1second press just reset, >=1 second change the ROM
+//      added button bounce protection
 
 // ---------------------------------------------------------------------------
 // includes
@@ -123,12 +128,16 @@ void main() {
     while(true) {
         if((gpio_get_all()&MASK_USER)==0) {  
             gpio_put(PIN_RESET,true);
-            if(++rompos==MAXROMS) rompos=0;
-            for(i=0;i<16384;i++) rom[i]=roms[rompos][i];
+            // wait for button release, if >1second then switch ROM otherwise just reset
+            uint64_t lastPing=time_us_64();
             while((gpio_get_all()&MASK_USER)==0) {
                 tight_loop_contents();
             }     
-            busy_wait_us_32(5000); // 5ms wait before reset
+            if(time_us_64()>lastPing+1000000) {
+                if(++rompos==MAXROMS) rompos=0;
+                for(i=0;i<16384;i++) rom[i]=roms[rompos][i];
+            }
+            busy_wait_us_32(50000); // de-bounce wait before reset, 50ms
             gpio_put(PIN_RESET,false);    // release RESET  
         }
     }
