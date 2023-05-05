@@ -11,7 +11,7 @@ Usage is very simple. On every cold boot the Spectrum will default to the first 
 
 ## Compressed ROMs
 
-From firmware v0.4 I shifted to use compressed ROMs just to save a little space if you want to add a lot of ROMs. PICO flash is 2MB so space for ~100 ROMs, so not a massive issue. I added a little utility `compressrom` which compresses a ROM binary file and creates the approprite header file to use with the main code. The utility will also pad 8kB ROMs to 16kB saving the need to do this manually.
+From firmware v0.4 I shifted to use compressed ROMs just to save a little space if you want to add a lot of ROMs. PICO flash is 2MB so space for ~100 ROMs, so not a massive issue but no need to waste space. I added a little utility `compressrom` which compresses a ROM binary file and creates the approprite header file to use with the main code. The utility will also pad 8kB ROMs to 16kB saving the need to do this manually.
 
 ## PIO & DMA
 
