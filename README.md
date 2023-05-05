@@ -1,7 +1,7 @@
 # ZXPicoIF2ROM
 IF2 ROM Cartridge Replacement using a Raspberry Pico. Makes use of the PIO state machine of the Raspberry Pico which removes the need to overclock the PICO.
 
-Based on the original design by Derek Fountain https://github.com/derekfountain/zx-spectrum-pico-rom This GitHub has a lot of great detail on how this all works so recommend a read.
+Based on the original design by Derek Fountain https://github.com/derekfountain/zx-spectrum-pico-rom. This GitHub has a lot of great detail on how this all works so recommend a read.
 
 ![image](./images/prototype.jpg "Prototype")
 
