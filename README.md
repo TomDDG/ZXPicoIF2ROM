@@ -9,6 +9,10 @@ Based on the original design by Derek Fountain https://github.com/derekfountain/
 
 Usage is very simple. On every cold boot the Spectrum will default to the first ROM in the `rom.h` header file. To change the ROM you simply press and hold (firmware v0.3+) the user button for >1second. Upon release the new ROM will boot. If you want to simply reset the Spectrum just press the user button and do not hold down.
 
+## Compressed ROMs
+
+From firmware v0.4 I shifted to use compressed ROMs just to save a little space. I add a little utility `compressrom` which compresses a ROM binary file and creates the approprite header file to use with the main code. The utility will pad 8kB ROMs to 16kB saving the need to do this manually.
+
 ## PIO & DMA
 
 Derek's original design used one of the processors of the RP2040 to read the ADDRESS pins and write out the DATA lines if required. In order to do this fast enough the RP2040 needed to be overclocked. For my version I decided to use the PIO (https://www.raspberrypi.com/news/what-is-pio/) mainly as I wanted to learn how to use it. The PIO has many advantages including being fast enough to avoid an overclock but also it works completely independently from the main CPU and is not affected by things like interrupts.
