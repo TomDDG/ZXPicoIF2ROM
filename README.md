@@ -19,7 +19,7 @@ In order for the PIO to work it needs to be coupled with the PICOs DMA which wil
 3. DMA channel 1 reads the PIO FIFO and puts this into the DMA channel 2 read address
 4. DMA channel 2 sends the single byte of data (8bits) at the new read address to the PIO FIFO
 5. PIO auto pushes the PIO FIFO to the OSR which is then outputted (OUT) to the data pins (D0-D7)
-6. Loop to 1
+6. Wrap back to 1
 
 The PIO allows for the set-up of independent input and output pins which fits perfectly for this use case. There are also a couple of additional set-up steps such as enabling autopush on the PIO and also converting the 14bit address read in to a 32bit address in PICO memory. This is all detailed in the code.
 
