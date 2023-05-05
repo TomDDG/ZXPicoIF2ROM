@@ -7,7 +7,7 @@ Based on the original design by Derek Fountain https://github.com/derekfountain/
 
 ## Usage
 
-Usage is very simple. On every cold boot the Spectrum will default to the first ROM in the `rom.h` header file. To change the ROM you simply press and hold (as per firmware v0.3) the user button for >1second. Upon release the new ROM will boot. If you want to simply reset the Spectrum just press the user button and do not hold down.
+Usage is very simple. On every cold boot the Spectrum will default to the first ROM in the `rom.h` header file. To change the ROM you simply press and hold (firmware v0.3+) the user button for >1second. Upon release the new ROM will boot. If you want to simply reset the Spectrum just press the user button and do not hold down.
 
 ## PIO & DMA
 
