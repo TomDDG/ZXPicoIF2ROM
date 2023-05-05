@@ -7,7 +7,7 @@ Based on the original design by Derek Fountain https://github.com/derekfountain/
 
 ## Usage
 
-Usage is very simple. On every cold boot the Spectrum will default to the first ROM in the rom.h header file. To change the ROM you simply press and hold (as per firmware v0.3) the user button for >1second. Upon release the new ROM will boot. If you want to simply reset the Spectrum just press the user button and do not hold down.
+Usage is very simple. On every cold boot the Spectrum will default to the first ROM in the `rom.h` header file. To change the ROM you simply press and hold (as per firmware v0.3) the user button for >1second. Upon release the new ROM will boot. If you want to simply reset the Spectrum just press the user button and do not hold down.
 
 ## PIO & DMA
 
@@ -21,13 +21,13 @@ In order for the PIO to work it needs to be coupled with the PICOs DMA which wil
 5. PIO auto pushes the PIO FIFO to the OSR which is then outputted (OUT) to the data pins (D0-D7)
 6. Wrap back to 1
 
-The PIO allows for the set-up of independent input and output pins which fits perfectly for this use case. There are also a couple of additional set-up steps such as enabling autopush on the PIO and also converting the 14bit address read in to a 32bit address in PICO memory. This is all detailed in the code.
+The PIO allows for the set-up of independent input and output pins which fits perfectly for this use case. There are also a couple of additional set-up steps such as enabling auto-push on the PIO and converting the 14bit address read in to a 32bit address in PICO memory. This is all detailed in the code.
 
-My initial design had the PIO wait for the correct signal before sending the data (WAIT statement on A14, RD, A15 & MREQ all being zero) but I determined that this was not need as it can be accomplished just using the output enable (OE) pin on the 74LS245 chip. This pin controls whether data is actually sent to the Spectrum or not so simply connecting this to the OR of MREQ, A14, A15 & RD means only when all 4 are 0 is any data sent. This is basically a ROM (0-16383bytes) Read (RD) Memory Request (MREQ). This allowed me to simplfy the PIO code to just loop constantly reading the address and writing the data.
+My initial design had the PIO wait for the correct signal before sending the data (WAIT statement on A14, RD, A15 & MREQ all being zero) but I determined that this was not need as it can be accomplished just using the output enable (OE) pin on the 74LS245 chip. This pin controls whether data is actually sent to the Spectrum or not so simply connecting this to the OR of MREQ, A14, A15 & RD means only when all 4 are 0 is any data sent. This is basically a ROM (0-16383bytes) Read (RD) Memory Request (MREQ). This allowed me to simplify the PIO code to just loop constantly reading the address and writing the data.
 
 ## Schematic
 
-The main changes from Derek's original circuit was to put the Address & Data GPIOs in order which is required for the PIO code. I also removed the ouput from the OR chip to the PICO as I shifted to just controlling the data output using the OE pin as described above. This freed up a couple of GPIOs which I decided to allocate to an I2C connector just in case I wanted to attach a screen or something else.
+The main changes from Derek's original circuit was to put the Address & Data GPIOs in order which is required for the PIO code. I also removed the output from the OR chip to the PICO as I shifted to just controlling the data output using the OE pin as described above. This freed up a couple of GPIOs which I decided to allocate to an I2C connector just in case I wanted to attach a screen or something else.
 
 ![image](./images/schematic.png "Schematic")
 
