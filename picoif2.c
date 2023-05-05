@@ -5,6 +5,7 @@
 // v0.2 initial release
 // v0.3 added multi-function to user button, <1second press just reset, >=1 second change the ROM
 //      added button bounce protection
+// v0.4 use of compressed ROMs
 
 // ---------------------------------------------------------------------------
 // includes
@@ -24,8 +25,8 @@
 #define PIN_A0      0   // GPIO 0-13 for A0-A13
 #define PIN_D0      14  // GPIO 15-21 for D0-D7
 //
-#define PIN_RESET   28  // GPIO to control RESET of Spectrum
-#define PIN_USER    26  // User input GPIO
+#define PIN_RESET   28  // GPIO to control RESET of Spectrum 
+#define PIN_USER    26  // User input GPIO (v1.1 PCB this is 22)
 //
 #define MAXROMS     4
 //
@@ -35,18 +36,19 @@
 //                                2         1         0
 //                        87654321098765432109876543210
 #define MASK_USER         0b100000000000000000000000000 // USER
-#define MASK_RESET      0b10000000000000000000000000000 // RESET
+//
+void dtoBuffer(uint8_t *to,const uint8_t *from);
 //
 void main() {
     uint i;
     // ---------------------------
     // copy correct ROM into place
     // ---------------------------
-    const uint8_t *roms[] = {retroleum_diag_v59,gosh_wonderful_1_32,original,diag};
+    const uint8_t *roms[] = {diagv59,original,diagv035,testrom};
     uint8_t rompos=0;
     uint8_t rom[16384] __attribute__((aligned (16384))); // align on 16384 boundary so can be used with DMA
     //
-    for(i=0;i<16384;i++) rom[i]=roms[rompos][i];
+    dtoBuffer(rom,roms[rompos]);
     // ------------------------
     // set-up user & reset gpio
     // ------------------------
@@ -135,10 +137,37 @@ void main() {
             }     
             if(time_us_64()>lastPing+1000000) {
                 if(++rompos==MAXROMS) rompos=0;
-                for(i=0;i<16384;i++) rom[i]=roms[rompos][i];
+                dtoBuffer(rom,roms[rompos]);
             }
             busy_wait_us_32(50000); // de-bounce wait before reset, 50ms
             gpio_put(PIN_RESET,false);    // release RESET  
         }
     }
+}
+
+// ---------------------------------------------------------------------------
+// dtoBuffer - decompress compressed ROM directly into buffer (simple LZ)
+// input:
+//   to - the buffer
+//   from - the compressed storage
+// *simple LZ has a simple 256 backwards window and greedy parser but is very
+// fast
+// ---------------------------------------------------------------------------
+void dtoBuffer(uint8_t *to,const uint8_t *from) { 
+    uint i=0,j=0,k;
+    uint8_t c,o;
+    do {
+        c=from[j++];
+        if(c==128) return;
+        else if(c<128) {
+            for(k=0;k<c+1;k++) to[i++]=from[j++];
+        }
+        else {
+            o=from[j++]; // offset
+            for(k=0;k<(c-126);k++) {
+                to[i]=to[i-(o+1)];
+                i++;
+            }
+        }
+    } while(true);
 }
