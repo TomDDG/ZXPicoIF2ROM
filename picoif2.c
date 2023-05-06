@@ -1,11 +1,12 @@
 #define PROG_NAME   "ZX PicoIF2"
-#define VERSION_NUM "v0.3"
+#define VERSION_NUM "v0.5"
 
 //
 // v0.2 initial release
 // v0.3 added multi-function to user button, <1second press just reset, >=1 second change the ROM
 //      added button bounce protection
 // v0.4 use of compressed ROMs
+// v0.5 added a ROM selector screen and cycle through ROMs if user button held down
 
 // ---------------------------------------------------------------------------
 // includes
@@ -28,36 +29,40 @@
 #define PIN_RESET   28  // GPIO to control RESET of Spectrum 
 #define PIN_USER    26  // User input GPIO (v1.1 PCB this is 22)
 //
-#define MAXROMS     4
-//
-// ---------------------------------------------------------------------------
-// gpio masks
-// ---------------------------------------------------------------------------
-//                                2         1         0
-//                        87654321098765432109876543210
-#define MASK_USER         0b100000000000000000000000000 // USER
+#define MAXROMS     6
 //
 void dtoBuffer(uint8_t *to,const uint8_t *from);
 //
 void main() {
     uint i;
-    // ---------------------------
-    // copy correct ROM into place
-    // ---------------------------
-    const uint8_t *roms[] = {diagv59,original,diagv035,testrom};
+    const uint8_t *roms[] = {original
+                            ,diagv59
+                            ,testrom
+                            ,origtest
+                            ,_128kram
+                            ,lookglass
+                            //,agd
+                            };
+    //                           012345678901234567890123456789012
+    const uint8_t *romname[] = {"Original 48k ROM"
+                                ,"Retroleum DiagROM v1.59"
+                                ,"ZX Spectrum Diagnositcs v0.37"
+                                ,"ZX Spectrum Test Cartridge"
+                                ,"128k RAM Tester"
+                                ,"Looking Glass ROM"
+                                //,"AGD v0.1"
+                                };
     uint8_t rompos=0;
     uint8_t rom[16384] __attribute__((aligned (16384))); // align on 16384 boundary so can be used with DMA
-    //
-    dtoBuffer(rom,roms[rompos]);
     // ------------------------
     // set-up user & reset gpio
     // ------------------------
+    gpio_init(PIN_RESET);
+    gpio_set_dir(PIN_RESET,GPIO_OUT);
+    gpio_put(PIN_RESET,true);    // hold in RESET state till ready 
     gpio_init(PIN_USER);
     gpio_set_dir(PIN_USER,GPIO_IN);
     gpio_pull_up(PIN_USER);
-    gpio_init(PIN_RESET);
-    gpio_set_dir(PIN_RESET,GPIO_OUT);
-    gpio_put(PIN_RESET,true);    // hold in RESET state till ready *not really required for PIO as it is fast enough but used for swapping ROMs    
     // ***********************************************************************
     // Set-up PIO
     // ***********************************************************************
@@ -125,20 +130,48 @@ void main() {
     // start PIO state machine
     pio_sm_put(pio,addr_data_sm,((dma_channel_hw_addr(data_chan)->read_addr)>>14)); // put start memory address into PIO shifted 14bits so when added to the 14 gpios it gives the correct memory location
     pio_sm_set_enabled(pio,addr_data_sm,true); // enable state machine
-    // reset when ready
+    // copy in start ROM
+    dtoBuffer(rom,roms[rompos]);
     gpio_put(PIN_RESET,false);    // release RESET    
     while(true) {
-        if((gpio_get_all()&MASK_USER)==0) {  
-            gpio_put(PIN_RESET,true);
-            // wait for button release, if >1second then switch ROM otherwise just reset
+        if(gpio_get(PIN_USER)==false) {    
+            gpio_put(PIN_RESET,true); // put Spectrum in RESET state            
+            // wait for button release and check held for 1second to switch ROM otherwise just reset
             uint64_t lastPing=time_us_64();
-            while((gpio_get_all()&MASK_USER)==0) {
-                tight_loop_contents();
-            }     
-            if(time_us_64()>lastPing+1000000) {
-                if(++rompos==MAXROMS) rompos=0;
-                dtoBuffer(rom,roms[rompos]);
+            while((gpio_get(PIN_USER)==false)&&(time_us_64()<lastPing+1000000)) {
+                tight_loop_contents(); 
             }
+            while(gpio_get(PIN_USER)==false) {
+                if(time_us_64()>=lastPing+1000000) {
+                    if(++rompos==MAXROMS) rompos=0;
+                    dtoBuffer(rom,switchrom);
+                    // change name at 0x64
+                    uint j,k=strlen(romname[rompos]);
+                    if(k>32) k=32;
+                    if(k<31) {
+                        j=(32-k)/2;
+                        for(i=0;i<j;i++) rom[100+i]=0x20;
+                    }
+                    for(j=0;j<k;i++,j++) {
+                        if(romname[rompos][j]>0x80||romname[rompos][j]<0x20) rom[i+100]=0x20;
+                        else rom[i+100]=romname[rompos][j];
+                    }
+                    while(i<32) {
+                        rom[100+i]=0x20;
+                        i++;
+                    }
+                    gpio_put(PIN_RESET,false);    // release RESET
+                    lastPing=time_us_64();
+                    while((gpio_get(PIN_USER)==false)&&(time_us_64()<lastPing+1000000)) {
+                        tight_loop_contents(); 
+                    } 
+                    while(time_us_64()<lastPing+500000) { // ensure minimum of 0.5 second wait
+                        tight_loop_contents(); 
+                    }
+                    gpio_put(PIN_RESET,true); // put Spectrum in RESET state
+                    dtoBuffer(rom,roms[rompos]);
+                }               
+            } 
             busy_wait_us_32(50000); // de-bounce wait before reset, 50ms
             gpio_put(PIN_RESET,false);    // release RESET  
         }
