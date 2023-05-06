@@ -16,7 +16,7 @@ If you would like to try out different ROMs there are a lot on Paul Farrow's web
 For demonstration purposes I have included the following ROMs:
 - Original ZX Spectrum ROM (copyright Amstrad)
 - Retroleum DiagROM v1.59 by Retroleum (http://blog.retroleum.co.uk/electronics-articles/a-diagnostic-rom-image-for-the-zx-spectrum/)
-- ZX Spectrum Diagnostics by Brendan Alford (https://github.com/brendanalford/zx-diagnostics/releases/tag/v0.37)
+- ZX Spectrum Diagnostics v0.37 by Brendan Alford (https://github.com/brendanalford/zx-diagnostics/releases/tag/v0.37)
 - ZX Spectrum Test Cartridge (copyright Amstrad)
 - 128k RAM Tester by Paul Farrow (http://www.fruitcake.plus.com/Sinclair/Interface2/Cartridges/Interface2_RC_New_RAM_Tester.htm)
 - Looking Glass ROM by Geoff Wearmouth as used on the Spectrum Next (https://gitlab.com/thesmog358/tbblue/-/tree/master/machines/next)
