@@ -13,6 +13,14 @@ To add more ROMs or change the ones provided here simply add them to the header 
 
 If you would like to try out different ROMs there are a lot on Paul Farrow's website http://www.fruitcake.plus.com/Sinclair/Interface2/Cartridges/Interface2_RC_Cartridges.htm
 
+For demonstration purposes I have included the following ROMs:
+- Original ZX Spectrum ROM (copyright Amstrad)
+- Retroleum DiagROM v1.59 by Retroleum (http://blog.retroleum.co.uk/electronics-articles/a-diagnostic-rom-image-for-the-zx-spectrum/)
+- ZX Spectrum Diagnostics by Brendan Alford (https://github.com/brendanalford/zx-diagnostics/releases/tag/v0.37)
+- ZX Spectrum Test Cartridge (copyright Amstrad)
+- 128k RAM Tester by Paul Farrow (http://www.fruitcake.plus.com/Sinclair/Interface2/Cartridges/Interface2_RC_New_RAM_Tester.htm)
+- Looking Glass ROM by Geoff Wearmouth as used on the Spectrum Next (https://gitlab.com/thesmog358/tbblue/-/tree/master/machines/next)
+
 ## Compressed ROMs
 
 From firmware v0.4 I shifted to use compressed ROMs just to save a little space if you want to add a lot of ROMs. PICO flash is 2MB so space for ~100 ROMs, so not a massive issue but no need to waste space. I added a little utility `compressrom` which compresses a ROM binary file and creates the approprite header file to use with the main code. The utility will also pad 8kB ROMs to 16kB saving the need to do this manually.
