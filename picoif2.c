@@ -1,5 +1,5 @@
 #define PROG_NAME   "ZX PicoIF2"
-#define VERSION_NUM "v0.5"
+#define VERSION_NUM "v0.5a"
 
 //
 // v0.2 initial release
@@ -7,6 +7,7 @@
 //      added button bounce protection
 // v0.4 use of compressed ROMs
 // v0.5 added a ROM selector screen and cycle through ROMs if user button held down
+// v0.5a changed USER pin to match v1.1 PCB
 
 // ---------------------------------------------------------------------------
 // includes
@@ -27,7 +28,7 @@
 #define PIN_D0      14  // GPIO 15-21 for D0-D7
 //
 #define PIN_RESET   28  // GPIO to control RESET of Spectrum 
-#define PIN_USER    26  // User input GPIO (v1.1 PCB this is 22)
+#define PIN_USER    22  // User input GPIO (v1.1 PCB this is 22)
 //
 #define MAXROMS     6
 //
