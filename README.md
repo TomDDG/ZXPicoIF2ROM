@@ -54,3 +54,5 @@ The main changes from Derek's original circuit was to put the Address & Data GPI
 For the PCB design I moved the components to the reverse of the PCB meaning I could mount some components lower down, knowing they wouldn't clash with the case, thus giving more room. I also shifted to using through hole components instead of surface mount due to my soldering skills. I also added a RUN button which basically resets the PICO, useful for flashing new firmware or recovering the PICO if it crashes (which is never does).
 
 ![image](./images/picoif2.png "PCB")
+
+v1.1 Gerbers are available in the file https://github.com/TomDDG/ZXPicoIF2ROM/blob/main/picoif2_2023-05-04.zip
