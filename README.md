@@ -56,3 +56,10 @@ For the PCB design I moved the components to the reverse of the PCB meaning I co
 ![image](./images/picoif2.png "PCB")
 
 v1.1 Gerbers are available in the file https://github.com/TomDDG/ZXPicoIF2ROM/blob/main/picoif2_2023-05-04.zip
+
+I've also created a simple 3D Printed case for the PCB which you can find on Printables https://www.printables.com/model/479276-zxpicoif2rom-v11pcb-case
+
+![image](./images/IMG_0672.jpg "Case 1")
+![image](./images/IMG_0673.jpg "Case 2")
+
+
