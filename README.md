@@ -1,4 +1,4 @@
-** I've discontinued this project replacing it with [ZX PicoZXCx]https://github.com/TomDDG/ZXPicoZXCx **
+**I've discontinued this project replacing it with [ZX PicoZXCx]https://github.com/TomDDG/ZXPicoZXCx**
 
 # ZXPicoIF2ROM
 IF2 ROM Cartridge Replacement using a Raspberry Pico. Makes use of the PIO state machine of the Raspberry Pico which removes the need to overclock the PICO.
